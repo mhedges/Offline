@@ -1,3 +1,4 @@
+# -*- mode:tcl -*-
 // Andrei Gaponenko, 2013
 // Jake Colston & Joseph Brock, 2015 (edit for cd3)
 
@@ -23,15 +24,11 @@ source : {
     module_type : RootInput
 }
 
-services : {
-    message                : @local::default_message
+services : { @table::Services.Sim 
     TFileService           : { fileName : "nts.owner.pions-g4s3.version.sequencer.root" }
-    RandomNumberGenerator  : {defaultEngineKind: "MixMaxRng"}
-    GeometryService        : { inputFile      : "JobConfig/common/geom_baseline.txt"    }
-    ConditionsService      : { conditionsfile : "Mu2eG4/test/conditions_01.txt"      }
-    GlobalConstantsService : { inputFile      : "Mu2eG4/test/globalConstants_01.txt" }
-    G4Helper               : {}
-    SeedService            : @local::automaticSeeds
+    GeometryService        : { @table::Services.Sim.GeometryService
+	inputFile      : "Mu2eG4/geom/geom_common_current.txt"    
+    }
 }
 
 physics : {
@@ -55,7 +52,7 @@ physics : {
                 inputPhysVolumeMultiInfo : "compressPV"
             }
 
-            doWriteLegacyPhysVolumeInfo : false
+#            doWriteLegacyPhysVolumeInfo : false
 
             SDConfig : {
                 enableSD         : [ virtualdetector ] // activate just the explicitly listed SDs
@@ -104,14 +101,32 @@ physics : {
             particleInputs : [ "stopFilter" ]
         }
 
+        ootCompressPVStop : {
+            module_type    : CompressPhysicalVolumes
+            volumesInput   : "g4run"
+            hitInputs      : []
+            particleInputs : [ "outOfTargetStopFilter" ]
+        }
+
         stoppedPionFinder : {
             module_type      : StoppedParticlesFinder
             particleInput    : "g4run"
             // multiple matches, we'll get the one from the current process, which is what we want
             physVolInfoInput : "g4run"
             stoppingMaterial : "StoppingTarget_Al"
-            particleTypes    : [ -211 ] // pi-
+            particleTypes    : [ -211, 211 ] // pi- and pi+
         }
+
+	outOfTargetStoppedPionFinder : {
+	    module_type      : StoppedParticlesFinder
+	    particleInput    : "g4run"
+	    physVolInfoInput : "g4run"
+	    vetoedMaterials  : [ "StoppingTarget_Al" ]
+	    particleTypes    : [ -211, 211 ] // pi- and pi+
+	    particleOffsetThreshold: 200000
+	    verbosityLevel: 1
+	}
+
     } // producers
 
     filters : {
@@ -122,16 +137,26 @@ physics : {
             mainSPPtrInputs           : [ "stoppedPionFinder" ]
             vetoDaughters             : [ "stoppedPionFinder" ]
         }
+
+        outOfTargetStopFilter : {
+            module_type               : FilterG4Out
+            mainHitInputs             : []
+            extraHitInputs            : [ "g4run:virtualdetector", "vacuuas1:vacuuas1" , "vacuuas2:vacuuas2" ]
+            mainSPPtrInputs           : [ "outOfTargetStoppedPionFinder" ]
+            vetoDaughters             : [ "outOfTargetStoppedPionFinder" ]
+        }
     } // filters
 
     analyzers : {
         genCountLogger : { module_type : GenEventCountReader }
     } // analyzers
 
-    pionStopFilter : [ g4run, vacuuas1, vacuuas2, stoppedPionFinder, stopFilter, compressPVStop ]
-    trigger_paths  : [ pionStopFilter ]
+    pionStopFilterPath            : [ g4run, vacuuas1, vacuuas2, stoppedPionFinder           , stopFilter           , compressPVStop    ]
+    outOfTargetPionStopFilterPath : [ g4run, vacuuas1, vacuuas2, outOfTargetStoppedPionFinder, outOfTargetStopFilter, ootCompressPVStop ]
 
-    out       : [ pionStopOutput ]
+    trigger_paths  : [ pionStopFilterPath,  outOfTargetPionStopFilterPath]
+
+    out       : [ pionStopOutput, outOfTargetPionStopOutput ]
     stops     : [ genCountLogger ]
     end_paths : [ out, stops ]
 }
@@ -139,14 +164,26 @@ physics : {
 outputs : {
     pionStopOutput : {
         module_type    : RootOutput
-        SelectEvents   : [pionStopFilter]
-        outputCommands : [ "drop *_*_*_*",
-                           "keep mu2e::GenParticles_*_*_*",
-                           "keep mu2e::GenEventCount_*_*_*",
-                           "keep mu2e::StatusG4_*_*_*",
-                           "keep *_stopFilter_*_*",
-                           "keep *_compressPVStop_*_*" ]
-        fileName       : "sim.owner.pions-g4s3.version.sequencer.art"
+        SelectEvents   : [pionStopFilterPath]
+#         outputCommands : [ "drop *_*_*_*",
+#                            "keep mu2e::GenParticles_*_*_*",
+#                            "keep mu2e::GenEventCount_*_*_*",
+#                            "keep mu2e::StatusG4_*_*_*",
+#                            "keep *_stopFilter_*_*",
+#                            "keep *_compressPVStop_*_*" ]
+        fileName       : "sim.owner.tgtPions-g4s3.version.sequencer.art"
+    }
+
+    outOfTargetPionStopOutput : {
+        module_type    : RootOutput
+        SelectEvents   : [outOfTargetPionStopFilterPath]
+#         outputCommands : [ "drop *_*_*_*",
+#                            "keep mu2e::GenParticles_*_*_*",
+#                            "keep mu2e::GenEventCount_*_*_*",
+#                            "keep mu2e::StatusG4_*_*_*",
+#                            "keep *_stopFilter_*_*",
+#                            "keep *_compressPVStop_*_*" ]
+        fileName       : "sim.owner.ootPions-g4s3.version.sequencer.art"
     }
 }
 
