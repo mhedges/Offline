@@ -58,10 +58,10 @@ namespace mu2e {
     int               verbosityLevel_;
 
     art::RandomNumberGenerator::base_engine_t& eng_;
-    CLHEP::RandGeneral randSpectrum_;
-    RandomUnitSphere   randomUnitSphere_;
+    CLHEP::RandGeneral     randSpectrum_;
+    CLHEP::RandExponential randTime_;
+    RandomUnitSphere       randomUnitSphere_;
 
-    //    RootTreeSampler<IO::StoppedParticleF> stops_;
     RootTreeSampler<IO::StoppedParticleTauNormF> stops_;
 //-----------------------------------------------------------------------------
 // histogramming
@@ -101,6 +101,7 @@ namespace mu2e {
     , doHistograms_       (pset.get<bool>("doHistograms",true ) )
   {
     produces<mu2e::GenParticleCollection>();
+    produces<mu2e::EventWeight>();
 
     if(genId_ == GenId::enum_type::unknown) {
       throw cet::exception("BADCONFIG")<<"StoppedParticleReactionGunPion: unknown genId "
@@ -170,9 +171,16 @@ namespace mu2e {
                          genId_,
                          pos,
                          fourmom,
+			 //                         stop.t+1000.); // good thing
                          stop.t);
 
     event.put(std::move(output));
+//-----------------------------------------------------------------------------
+// event weight assigned by the generator is defined py the pion survival probability
+//-----------------------------------------------------------------------------
+    // double timingWeight = exp(-stop.tauNormalized);
+    std::unique_ptr<EventWeight> pw(new EventWeight(weight));
+    event.put(std::move(pw));
 //-----------------------------------------------------------------------------
 // if requested, fill histograms. Currently, the only one
 //-----------------------------------------------------------------------------
