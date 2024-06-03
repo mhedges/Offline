@@ -47,6 +47,7 @@ namespace mu2e {
     double t0Val() const;
     float chisquared() const { return _chisq; }
     int nDOF() const { return _ndof; }
+    unsigned nHits(bool active=true) const;
     float fitConsistency() const { return _fitcon; }
     UInt_t nTrajSegments() const { return _segments.size(); }
     KinKal::TimeRange timeRange() const { return KinKal::TimeRange(_segments.front()._tmin,_segments.back()._tmax); }
@@ -57,8 +58,6 @@ namespace mu2e {
     bool loopHelixFit() const { return _status.hasAllProperties(TrkFitFlag::KKLoopHelix); }
     bool centralHelixFit() const { return _status.hasAllProperties(TrkFitFlag::KKCentralHelix); }
     bool kinematicLineFit() const { return _status.hasAllProperties(TrkFitFlag::KKLine); }
-    bool seedBTrkFit() const { return _status.hasAllProperties(TrkFitFlag::KSF); }
-    bool finalBTrkFit() const { return _status.hasAllProperties(TrkFitFlag::KFF); }
     // reconstitute (as best as possible) the fit trajectory.  The ptr will be null if the fit wasn't based on the requested trajector type
     // Note these return by value
     // Note that the returned piecetraj may have large gaps, unless the full fit trajectory was stored in the seed.
@@ -93,5 +92,7 @@ namespace mu2e {
     float         _flt0 = 0.0; // flight distance where the track crosses the tracker midplane (z=0).  Redundant with t0 in KinKal fits, and in the wrong unit
   };
   typedef std::vector<mu2e::KalSeed> KalSeedCollection;
+  typedef art::Ptr<mu2e::KalSeed> KalSeedPtr;
+  typedef std::vector<mu2e::KalSeedPtr> KalSeedPtrCollection;
 }
 #endif
