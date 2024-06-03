@@ -40,7 +40,8 @@ namespace mu2e {
       itrackerFWires, trackerWalls,      STMDet,            panelEBKey, DSCableRun,
       ProductionTargetCoreSection, ProductionTargetStartingCoreSection,
       ProductionTargetFinStartingSection,ProductionTargetNegativeEndRing, ProductionTargetPositiveEndRing,
-      ProductionTargetFinSection,ProductionTargetFinTopSection,ProductionTargetFinTopStartingSection,PTM,lastEnum
+      ProductionTargetFinSection,ProductionTargetFinTopSection,ProductionTargetFinTopStartingSection,
+      ProductionTargetSupportWheel,ProductionTargetSpokeWire,ProductionTarget,PTM,lastEnum
     };
 
     // Keep this in sync with the enum. Used in StepInstanceName.cc
@@ -49,10 +50,11 @@ namespace mu2e {
       "tracker",       "virtualdetector", "timeVD",            "stoppingtarget",   "CRV",            \
       "calorimeter",   "calorimeterRO",   "calorimeterROCard", "calorimeterCrate", "ExtMonUCITof",   \
       "trackerDS",    "protonabsorber",  "PSVacuum",          "stepper",          "trackerSWires",  \
-        "itrackerFWires", "trackerWalls",   "STMDet",            "panelEBKey", "DSCableRun", \
+      "itrackerFWires", "trackerWalls",   "STMDet",            "panelEBKey", "DSCableRun", \
       "ProductionTargetCoreSection", "ProductionTargetStartingCoreSection", \
       "ProductionTargetFinStartingSection","ProductionTargetNegativeEndRing","ProductionTargetPositiveEndRing",\
-        "ProductionTargetFinSection","ProductionTargetFinTopSection","ProductionTargetFinTopStartingSection","PTM"
+      "ProductionTargetFinSection","ProductionTargetFinTopSection","ProductionTargetFinTopStartingSection", \
+      "ProductionTargetSupportWheel","ProductionTargetSpokeWire","ProductionTarget","PTM"
 
   public:
 

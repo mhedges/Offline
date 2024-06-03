@@ -441,6 +441,20 @@ namespace mu2e {
       Inconel718->AddMaterial(findMaterialOrThrow("G4_Ti"),0.007);
     }
 
+    // Inconel 600 alloy.  Taken from http://www.matweb.com/
+    // Only building from elements that comprise more than 0.1% of it composition
+    mat = uniqueMaterialOrThrow( "Inconel600" );
+    {
+      G4Material* Inconel600 = new G4Material( mat.name, 8.47*CLHEP::g/CLHEP::cm3, 7);
+      Inconel718->AddMaterial(findMaterialOrThrow("G4_C"),0.002);
+      Inconel718->AddMaterial(findMaterialOrThrow("G4_Cr"),0.155);
+      Inconel718->AddMaterial(findMaterialOrThrow("G4_Cu"),0.005);
+      Inconel718->AddMaterial(findMaterialOrThrow("G4_Fe"),0.080);
+      Inconel718->AddMaterial(findMaterialOrThrow("G4_Mn"),0.010);
+      Inconel718->AddMaterial(findMaterialOrThrow("G4_Ni"),0.743);
+      Inconel718->AddMaterial(findMaterialOrThrow("G4_Si"),0.005);
+    }
+
     // Bronze used in the HRS.  Formally, Bronze C63200.
     mat = uniqueMaterialOrThrow( "HRSBronze" );
     {

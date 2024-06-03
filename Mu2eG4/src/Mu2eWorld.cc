@@ -1125,6 +1125,41 @@ namespace mu2e {
         }
       }
     }
+    if(sdHelper_->enabled(StepInstanceName::ProductionTargetSupportWheel)) {
+      Mu2eG4SensitiveDetector* prodtargsuppwheelSD =
+        new Mu2eG4SensitiveDetector( SensitiveDetectorName::ProductionTargetSupportWheel(), _config );
+      SDman->AddNewDetector(prodtargsuppwheelSD);
+      for(G4LogicalVolumeStore::iterator pos=store->begin(); pos!=store->end(); pos++){
+        G4String LVname = (*pos)->GetName();
+        if (LVname.find("ProductionTargetSupportWheel") != std::string::npos) {
+          (*pos)->SetSensitiveDetector(prodtargsuppwheelSD);
+        }
+      }
+    }
+
+    if(sdHelper_->enabled(StepInstanceName::ProductionTargetSpokeWire)) {
+      Mu2eG4SensitiveDetector* prodtargspokewireSD =
+        new Mu2eG4SensitiveDetector( SensitiveDetectorName::ProductionTargetSpokeWire(), _config );
+      SDman->AddNewDetector(prodtargspokewireSD);
+      for(G4LogicalVolumeStore::iterator pos=store->begin(); pos!=store->end(); pos++){
+        G4String LVname = (*pos)->GetName();
+        if (LVname.find("ProductionTargetSpokeWire") != std::string::npos) {
+          (*pos)->SetSensitiveDetector(prodtargspokewireSD);
+        }
+      }
+    }
+
+    if(sdHelper_->enabled(StepInstanceName::ProductionTarget)) {
+      Mu2eG4SensitiveDetector* prodtarg =
+        new Mu2eG4SensitiveDetector( SensitiveDetectorName::ProductionTarget(), _config );
+      SDman->AddNewDetector(prodtarg);
+      for(G4LogicalVolumeStore::iterator pos=store->begin(); pos!=store->end(); pos++){
+        G4String LVname = (*pos)->GetName();
+        if (LVname.find("ProductionTarget") != std::string::npos) {
+          (*pos)->SetSensitiveDetector(prodtarg);
+        }
+      }
+    }
 
     /************************** CRV **************************/
     if(sdHelper_->enabled(StepInstanceName::CRV)) {

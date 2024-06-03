@@ -78,6 +78,17 @@ namespace mu2e {
       return StepInstanceName::name(StepInstanceName::ProductionTargetFinTopStartingSection).c_str();
     }
 
+    static char const * ProductionTargetSupportWheel(){
+      return StepInstanceName::name(StepInstanceName::ProductionTargetSupportWheel).c_str();
+    }
+    static char const * ProductionTargetSpokeWire(){
+      return StepInstanceName::name(StepInstanceName::ProductionTargetSpokeWire).c_str();
+    }
+
+     static char const * ProductionTarget(){
+      return StepInstanceName::name(StepInstanceName::ProductionTarget).c_str();
+    }
+
     static char const * CRSScintillatorBar(){
       return StepInstanceName::name(StepInstanceName::CRV).c_str();
     }

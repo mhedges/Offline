@@ -1088,11 +1088,13 @@ namespace mu2e {
 
       //Add support structures for the production target
       if(tgt->supportsBuild()) {
+
+        std::string nameSuppWheel = "ProductionTargetSupportWheel";
         G4Material* suppWheelMaterial = findMaterialOrThrow(tgt->supportWheelMaterial());
         G4ThreeVector localWheelCenter(0.0,0.0,0.0); //no offset
         double suppWheelParams[] = {tgt->supportWheelRIn(), tgt->supportWheelROut(), tgt->supportWheelHL()};
         //create the volume info for the support wheel+rods
-        VolumeInfo suppWheelInfo( "ProductionTargetSupportWheel", localWheelCenter, prodTargetMotherInfo.centerInMu2e());
+        VolumeInfo suppWheelInfo( nameSuppWheel, localWheelCenter, prodTargetMotherInfo.centerInMu2e());
         suppWheelInfo.solid = new G4Tubs("ProductionTargetSupportWheel_wheel", suppWheelParams[0], suppWheelParams[1],
                                          suppWheelParams[2], 0., CLHEP::twopi);
                                                // suppWheelParams,
@@ -1222,7 +1224,6 @@ namespace mu2e {
             else
               spokeName << "Upstream_";
             spokeName << ispoke;
-
             VolumeInfo spokeInfo   = nestTubs( spokeName.str(),
                                                spokeParams,
                                                spokeMaterial,
@@ -1233,6 +1234,24 @@ namespace mu2e {
                                                G4Colour::Gray(),
                                                "PS"
                                                );
+
+            //std::string nameSpoke = "ProductionTargetSpokeWire_";
+            //if(istream == 0)
+            //  nameSpoke += "Downstream_";
+            //else
+            //  nameSpoke += "Upstream_";
+            //nameSpoke += std::to_string(ispoke);
+
+            //VolumeInfo spokeInfo   = nestTubs( nameSpoke,
+            //                                   spokeParams,
+            //                                   spokeMaterial,
+            //                                   spokeRot,
+            //                                   spokeCenter,
+            //                                   prodTargetMotherInfo,
+            //                                   0,
+            //                                   G4Colour::Gray(),
+            //                                   "PS"
+            //                                   );
 
           } //end spokes loop
         } //end stream loop
