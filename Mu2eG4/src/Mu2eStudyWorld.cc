@@ -77,6 +77,7 @@ namespace mu2e {
     , sdHelper_(sdHelper)
     , conf_(conf)
     , writeGDML_(conf.debug().writeGDML())
+    , overwriteGDML_(conf.debug().overwriteGDML())
     , gdmlFileName_(conf.debug().GDMLFileName())
     , g4stepperName_(conf.physics().stepper())
     , bfieldMaxStep_(conf.physics().bfieldMaxStep())//unused
@@ -174,8 +175,13 @@ namespace mu2e {
     //    constructStepLimiters();
 
     // Write out geometry into a gdml file.
+    std::cout << "writeGDML is " << writeGDML_ << std::endl;
     if (writeGDML_) {
       G4GDMLParser parser;
+      std::cout << "overwriteGDML is " << overwriteGDML_ << std::endl;
+      if (overwriteGDML_ == true) {
+        parser.SetOutputFileOverwrite(overwriteGDML_);
+      }
       parser.Write(gdmlFileName_, worldVInfo.logical);
     }
 

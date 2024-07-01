@@ -80,6 +80,7 @@ namespace mu2e {
     // _verbosityLevel in the base class
 
     bool        writeGDML_;
+    bool        overwriteGDML_;
     std::string gdmlFileName_;
     std::string g4stepperName_;
     double      bfieldMaxStep_;

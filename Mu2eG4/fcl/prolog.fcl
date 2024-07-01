@@ -163,6 +163,7 @@ mu2eg4DefaultDebug: {
     // ionToGenerate : [1000591349, 0.163100 , 1] // ionid, excEnergy uncomment to activate for testing; experts only
     checkFieldMap : 0
     writeGDML : false
+    overwriteGDML : false
     GDMLFileName : "mu2e.gdml"
 }
 #----------------

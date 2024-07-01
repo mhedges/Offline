@@ -49,6 +49,7 @@ namespace mu2e {
       fhicl::Atom<bool> printMaterials {Name("printMaterials"), Comment("Print materials from constructMaterials()")};
 
       fhicl::Atom<bool> writeGDML {Name("writeGDML")};
+      fhicl::Atom<bool> overwriteGDML {Name("overwriteGDML")};
       fhicl::Atom<std::string> GDMLFileName {Name("GDMLFileName")};
 
       fhicl::Atom<bool> stepLimitKillerVerbose {Name("stepLimitKillerVerbose")};
