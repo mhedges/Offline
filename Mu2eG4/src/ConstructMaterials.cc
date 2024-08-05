@@ -457,8 +457,8 @@ namespace mu2e {
     // Diamond. Taken from pdg.lbl.gov/2023/AtomicNuclearProperties (C, diamond)
     mat = uniqueMaterialOrThrow( "diamond" );
     {
-      G4Material* diamodn = new G4Material( mat.name, 3.520*CLHEP::g/CLHEP::cm3, 1);
-      Inconel600->AddMaterial(findMaterialOrThrow("G4_C"),1.0);
+      G4Material* diamond= new G4Material( mat.name, 3.520*CLHEP::g/CLHEP::cm3, 1);
+      diamond->AddMaterial(findMaterialOrThrow("G4_C"),1.0);
     }
 
     // Bronze used in the HRS.  Formally, Bronze C63200.
