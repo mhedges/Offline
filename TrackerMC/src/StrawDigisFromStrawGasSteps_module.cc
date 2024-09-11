@@ -476,11 +476,11 @@ namespace mu2e {
         auto adcs_handle = event.getHandle<StrawDigiADCWaveformCollection>(_mixedDigisTag);
         // bundle up preexisting digi products, optionally including DigiMCs
         if (!_mixDigiMCs){
-          auto dgmcs_handle = event.getHandle<StrawDigiMCCollection>(_mixedDigisTag);
-          bundles.Append(*digi_handle, *adcs_handle, *dgmcs_handle);
+          bundles.Append(*digi_handle, *adcs_handle);
         }
         else{
-          bundles.Append(*digi_handle, *adcs_handle);
+          auto dgmcs_handle = event.getHandle<StrawDigiMCCollection>(_mixedDigisTag);
+          bundles.Append(*digi_handle, *adcs_handle, *dgmcs_handle);
         }
       }
 
@@ -875,7 +875,7 @@ namespace mu2e {
           }
           // subtract a small buffer
           ptime -= _adcbuffer;
-          mcdigis->push_back(StrawDigiMC(sid,cpos,ctime,wetime,sgspa,StrawDigiProvenance::Simulation));
+          mcdigis->push_back(StrawDigiMC(sid,cpos,ctime,wetime,sgspa,DigiProvenance::Simulation));
           if(_diag > 1){
             digiDiag(strawphys,wf,xpair,digis->back(),digiadcs->back(),mcdigis->back());
           }
